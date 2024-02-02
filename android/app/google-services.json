@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "912263647036",
+    "project_id": "poloniextask",
+    "storage_bucket": "poloniextask.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912263647036:android:e9343dd6cfff463bb49839",
+        "android_client_info": {
+          "package_name": "com.example.poloniex_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpUFJB_rdGrDQPy1EfIjFAvUSNZ27vsxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
