@@ -68,7 +68,7 @@ class OnboardScreen extends StatelessWidget {
                 )),
             TextButton(
                 onPressed: () {
-                  Get.to(const SingupScreen());
+                  Get.to( SignUpScreen());
                 },
                 child: Container(
                   width: 156,

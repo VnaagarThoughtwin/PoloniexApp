@@ -1,10 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:poloniex_app/Views/home.dart';
 import 'package:poloniex_app/Views/onboard.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'controllers/auth_controllers.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,8 +23,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
+      initialBinding: BindingsBuilder(() {
+        Get.lazyPut<AuthController>(() => AuthController());
+      }),
       // home: const  OnboardScreen(),
-      home:  HomeScreen(),
+      home:  OnboardScreen(),
     );
   }
 }
