@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:poloniex_app/Views/home.dart';
 import 'package:poloniex_app/Views/onboard.dart';
 
 void main() {
@@ -15,11 +14,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  GetMaterialApp(
       title: 'PolonixApp',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      // home: const  OnboardScreen(),
-      home:  HomeScreen(),
+      home: const  OnboardScreen(),
     );
   }
 }
