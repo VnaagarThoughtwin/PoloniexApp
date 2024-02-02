@@ -7,7 +7,7 @@
 
 // class SocketApi {
 
-// var socketUrl = "";
+
 
 //   factory SocketApi() {
 //     return _socketApi;
@@ -43,6 +43,5 @@
 //   }
 
 //   // A static private instance to access _socketApi from inside class only
-//   static final SocketApi _socketApi = SocketApi._internal();
   
 // }

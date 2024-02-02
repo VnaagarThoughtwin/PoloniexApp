@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:poloniex_app/controllers/homeController.dart';
 
 
 class HomeScreen extends StatelessWidget {
+
+  HomeController homeController = HomeController();
+  
   HomeScreen({Key? key}) : super(key: key);
 
   final List<Color> gradientColors = [
@@ -72,15 +74,15 @@ class HomeScreen extends StatelessWidget {
 
   LineChartData mainData() {
     return LineChartData(
-      gridData: FlGridData(
+      gridData: const FlGridData(
         show: false,
       ),
       titlesData: FlTitlesData(
         show: true,
-        rightTitles: AxisTitles(
+        rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        topTitles: AxisTitles(
+        topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
         bottomTitles: AxisTitles(
@@ -116,7 +118,7 @@ class HomeScreen extends StatelessWidget {
           color: Colors.white,
           barWidth: 2,
           isStrokeCapRound: true,
-          dotData: FlDotData(
+          dotData: const FlDotData(
             show: false,
           ),
           belowBarData: BarAreaData(
