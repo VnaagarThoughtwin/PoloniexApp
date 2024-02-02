@@ -41,8 +41,8 @@ dependencies:
 
   firebase_auth:
   firebase_core:
-
-  # fl_chart: 
+  fl_chart: 
+  web_socket_channel: ^2.4.0
 
 dev_dependencies:
   flutter_test:

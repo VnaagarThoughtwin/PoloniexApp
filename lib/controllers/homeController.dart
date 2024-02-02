@@ -1,15 +1,16 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:poloniex_app/Modal/crypto.dart';
 import 'package:poloniex_app/Modal/getTokenModal.dart';
 import 'package:poloniex_app/networks/network_repo.dart';
 import 'package:poloniex_app/utils/constant.dart';
-
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-
-import 'package:socket_io_client/socket_io_client.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class HomeController extends GetxController {
+  RxList<Crypto> cryspoData = <Crypto>[].obs;
+  var status = false;
+
   @override
   void onInit() {
     super.onInit();
@@ -19,44 +20,33 @@ class HomeController extends GetxController {
   Future<void> fetchToken() async {
     var jsonMap = await networkRepository.getToken(ApiConstant.getToken);
     var responseData = GetToken.fromJson(jsonMap);
+    print(responseData.data.token);
 
-    var socketUrl =
+    var webSocket =
         "${responseData.data.instanceServers.first.endpoint}?token=${responseData.data.token}&acceptUserMessage=true";
-    print(socketUrl);
-    IO.Socket socket = IO.io(
-      socketUrl,
-      IO.OptionBuilder()
-          .setTransports(['websocket'])
-          .enableForceNewConnection()
-          .setTimeout(5000)
-          .setReconnectionDelay(10000)
-          .enableReconnection()
-          .build(),
+
+    final channel = WebSocketChannel.connect(
+      Uri.parse(webSocket),
     );
 
-    print('socket init connected: ${socket.connected}');
-    try {
-      if (socket.connected == false) {
-        socket.connect();
-        socket.onConnect((_) {
-          print('Connection established');
-        });
-        socket.on('unauthorized', (dynamic data) {
-          print('Unauthorized');
-        });
-        socket.onError(
-          (dynamic error) => {
-            print(error),
-          },
-        );
-        socket.onDisconnect((dynamic data) {
-          print('socket instance disconnected');
-        });
-      } else {
-        print('socket instance already connected');
-      }
-    } catch (e) {
-      print("socket error - ${e.toString()}");
-    }
+    channel.sink.add(
+      jsonEncode({
+        "id": 1545910660740,
+        "type": "subscribe",
+        "topic": "/contractMarket/ticker:BTCUSDTPERP",
+        "response": true
+      }),
+    );
+
+    channel.stream.listen(
+      (data) {
+        var decodeDedData = jsonDecode(data);
+print(decodeDedData);
+        if (status) {
+          cryspoData.add(cryptoFromJson(data));
+        }
+      },
+      onError: (error) => print(error),
+    );
   }
 }
