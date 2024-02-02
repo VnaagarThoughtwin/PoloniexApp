@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:poloniex_app/Views/home.dart';
 import 'package:poloniex_app/Views/onboard.dart';
 
 import 'controllers/auth_controllers.dart';
@@ -20,14 +19,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  GetMaterialApp(
       title: 'PolonixApp',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      initialBinding: BindingsBuilder(() {
-        Get.lazyPut<AuthController>(() => AuthController());
-      }),
       // home: const  OnboardScreen(),
-      home:  OnboardScreen(),
+      home:  HomeScreen(),
     );
   }
 }
