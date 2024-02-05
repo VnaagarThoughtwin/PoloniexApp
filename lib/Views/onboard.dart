@@ -2,9 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:poloniex_app/Views/login.dart';
 import 'package:poloniex_app/Views/signup.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
-class OnboardScreen extends StatelessWidget {
+class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
+
+  @override
+  State<OnboardScreen> createState() => _OnboardScreenState();
+}
+
+class _OnboardScreenState extends State<OnboardScreen> {
+
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
