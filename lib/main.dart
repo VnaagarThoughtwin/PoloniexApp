@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         Get.lazyPut<AuthController>(() => AuthController());
       }),
       // home: const  OnboardScreen(),
-      home:  HomeScreen(),
+      home:  OnboardScreen(),
     );
   }
 }
