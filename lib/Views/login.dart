@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
+
 import 'package:poloniex_app/Views/home.dart';
 import 'package:poloniex_app/Views/signup.dart';
+import 'package:poloniex_app/controllers/auth_controllers.dart';
 import 'package:poloniex_app/controllers/login_controller.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import '../Widgets/custom_button.dart';
 import '../Widgets/custom_textField.dart';
 
@@ -16,6 +20,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final LoginController loginCont = Get.put(LoginController());
+  AuthController authController = Get.put(AuthController());
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +64,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               CustomTextFormField(
+                controller: emailController,
                 hintText: 'Enter your Email',
                 labelText: 'Email Address',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               CustomTextFormField(
                   hintText: 'Enter your email',
                   labelText: 'Password',
+                  controller: passwordController,
                   obscureText: loginCont.obscureText.value,
                   suffixIcon: IconButton(
                       onPressed: () {
@@ -81,10 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? Icons.visibility
                             : Icons.visibility_off,
                         color: loginCont.obscureText.value
-                            ? Color(0xFF437C28)
+                            ? const Color(0xFF437C28)
                             : Colors.grey,
                       ))),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               CustomButton(
@@ -93,9 +102,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderColor: Colors.transparent,
                 onTap: () {
                   Get.to(HomeScreen());
+                  Future<UserCredential?> result =
+                      authController.signInWithEmailAndPassword(
+                          emailController.text, passwordController.text);
+                  // ignore: unnecessary_null_comparison
+                  if (result != null) {
+                    print('Login Successful: ${result}');
+                    
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Login Failed Please check Credentials ");
+                  }
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Wrap(
@@ -107,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   InkWell(
                       onTap: () {
-                        Get.to(SignUpScreen());
+                        Get.to(const SignUpScreen());
                       },
                       child: const Text(
                         'Sign Up',

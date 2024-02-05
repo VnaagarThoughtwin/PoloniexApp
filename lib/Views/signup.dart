@@ -1,12 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/route_manager.dart';
+import 'package:poloniex_app/Views/home.dart';
 import 'package:poloniex_app/Views/login.dart';
+import 'package:poloniex_app/controllers/auth_controllers.dart';
+import 'package:poloniex_app/controllers/homeController.dart';
 import '../Widgets/custom_button.dart';
 import '../Widgets/custom_textField.dart';
 import '../controllers/login_controller.dart';
-import 'home.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -17,6 +19,11 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final LoginController loginCont = Get.put(LoginController());
+
+  final AuthController authController = Get.put(AuthController());
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -61,24 +68,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 40,
               ),
               CustomTextFormField(
+                controller: authController.firstNameController,
                 hintText: 'Enter your First Name',
                 labelText: 'First Name',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               CustomTextFormField(
+                controller: authController.lastNameController,
                 hintText: 'Enter your Last Name',
                 labelText: 'Last Name',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               CustomTextFormField(
                 hintText: 'Enter your Email',
                 labelText: 'Email Address',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               CustomTextFormField(
@@ -95,10 +104,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ? Icons.visibility
                             : Icons.visibility_off,
                         color: loginCont.obscureText.value
-                            ? Color(0xFF437C28)
+                            ? const Color(0xFF437C28)
                             : Colors.grey,
                       ))),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               CustomButton(
@@ -107,9 +116,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 borderColor: Colors.transparent,
                 onTap: () {
                   Get.to(HomeScreen());
+                  Future<UserCredential> result = authController.signUp(
+                      emailController.text, passwordController.text);
+                  // ignore: unnecessary_null_comparison
+                  if (result != null) {
+                    print('Sign Up Successful: ${result}');
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "signIu Failed Please check Credentials ");
+                  }
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Wrap(

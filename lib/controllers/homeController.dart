@@ -18,15 +18,20 @@ class HomeController extends GetxController {
   }
 
   Future<void> fetchToken() async {
-    var jsonMap = await networkRepository.getToken(ApiConstant.getToken);
-    var responseData = GetToken.fromJson(jsonMap);
-    print(responseData.data.token);
+    try {
+      var jsonMap = await networkRepository.getToken(ApiConstant.getToken);
+      var responseData = GetToken.fromJson(jsonMap);
+      String webSocketURL =
+          "${responseData.data.instanceServers.first.endpoint}?token=${responseData.data.token}&acceptUserMessage=true";
+      tryConnect(webSocketURL);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
-    var webSocket =
-        "${responseData.data.instanceServers.first.endpoint}?token=${responseData.data.token}&acceptUserMessage=true";
-
+  void tryConnect(String webSocketURL) {
     final channel = WebSocketChannel.connect(
-      Uri.parse(webSocket),
+      Uri.parse(webSocketURL),
     );
 
     channel.sink.add(
@@ -41,12 +46,23 @@ class HomeController extends GetxController {
     channel.stream.listen(
       (data) {
         var decodeDedData = jsonDecode(data);
-print(decodeDedData);
-        if (status) {
-          cryspoData.add(cryptoFromJson(data));
+        print('socket data - $decodeDedData');
+        if (data != null) {
+          if (decodeDedData["data"] != null) {
+            var pasrsedDate = cryptoFromJson(data);
+
+            cryspoData.add(pasrsedDate);
+          }
         }
       },
-      onError: (error) => print(error),
+      onDone: () => tryConnect(webSocketURL),
+      onError: (error) => print('error - ${error.toString()}'),
     );
   }
 }
+
+// class FlSpot {
+//   FlSpot(this.year, this.sales);
+//   final double year;
+//   final double sales;
+// }
